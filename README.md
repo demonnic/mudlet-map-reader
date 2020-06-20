@@ -6,6 +6,9 @@ Original source code available here: https://github.com/Delwing/mudlet-map-reade
 
 I've honestly just translated it from Polish to English and removed the Arkadian branding to make it more Mudlet generic. The original work is excellent and I will be monitoring upstream to pull in additional enhancements as they come.
 
+Screenshot is from [Asteria](http://www.asteriamud.com/home.html)
+
+![Screenshot](https://demonnic.github.io/gifs/MudletMapExplorer.png)
 
 ## Installation
 
@@ -13,7 +16,7 @@ Download the latest mpackage release from https://github.com/demonnic/mudlet-map
 
 If you've installed a previous version, uninstall it from the Package Manager, then install the new version either by using the Package Manager or dragging the file and dropping it onto Mudlet's main screen.
 
-## Use
+## Usage
 
 Just run the alias
 ```
