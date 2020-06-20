@@ -1,6 +1,7 @@
 .idea
 *.iml
 *.DS_Store
-data/current.js
-data/mapExport.js
-data/colors.js
+build/
+src/resources/data/current.js
+src/resources/data/mapExport.js
+src/resources/data/colors.js

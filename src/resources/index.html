@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Mapa Arkadii</title>
+    <title>Mudlet Map Explorer</title>
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico"/>
     <script src="data/current.js"></script>
     <script src="data/mapExport.js"></script>
@@ -19,8 +19,7 @@
 <header>
     <div class="left-header">
     <h2>
-        <img src="images/logo.svg" class="logo" alt="logo">
-        <a href="index.html">Mapa Arkadii</a>
+        <a href="index.html">Mudlet Map Explorer</a>
     </h2>
     <div class="map-controls">
         <form>
@@ -32,25 +31,25 @@
     </div>
     </div>
     <div class="controls flex-wrap btn-toolbar">
-        <button class="control copy-image btn btn-secondary" title="Kopiuj obraz">
+        <button class="control copy-image btn btn-secondary" title="Copy Image">
             <img src="images/files.svg" alt="Copy">
-            <span>Kopiuj obraz</span>
+            <span>Copy Image</span>
         </button>
-        <button class="control save-image btn btn-secondary" title="Zapisz obraz">
+        <button class="control save-image btn btn-secondary" title="Save Image">
             <img src="images/download.svg" alt="Download">
-            <span>Zapisz obraz</span>
+            <span>Save Image</span>
         </button>
-        <button class="control search btn btn-secondary" data-toggle="modal" data-target="#search" title="Szukaj">
+        <button class="control search btn btn-secondary" data-toggle="modal" data-target="#search" title="Search">
             <img src="images/search.svg" alt="search">
-            <span>Szukaj</span>
+            <span>Search</span>
         </button>
-        <button class="control settings btn btn-secondary" data-toggle="modal" data-target="#settings" title="Ustawienia">
+        <button class="control settings btn btn-secondary" data-toggle="modal" data-target="#settings" title="Settings">
             <img src="images/gear-fill.svg" alt="gear">
-            <span>Ustawienia</span>
+            <span>Settings</span>
         </button>
-        <button class="control help btn btn-secondary" data-toggle="modal" data-target="#help" title="Pomoc">
+        <button class="control help btn btn-secondary" data-toggle="modal" data-target="#help" title="Help">
             <img src="images/question-circle.svg" alt="question">
-            <span>Pomoc</span>
+            <span>Help</span>
         </button>
     </div>
 </header>
@@ -64,7 +63,7 @@
         <div class="modal-content">
             <form class="search-form">
                 <div class="modal-header">
-                    <h5 class="modal-title">Szukaj</h5>
+                    <h5 class="modal-title">Search</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
@@ -76,7 +75,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Szukaj</button>
+                    <button type="submit" class="btn btn-primary">Search</button>
                 </div>
             </form>
         </div>
@@ -87,45 +86,45 @@
         <div class="modal-content">
             <form class="settings-form">
                 <div class="modal-header">
-                    <h5 class="modal-title">Ustawienia</h5>
+                    <h5 class="modal-title">Settings</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="location-size">Wielkość lokacji</label>
+                        <label for="location-size">Room Size</label>
                         <input class="form-control" type="number" id="location-size" name="roomSize">
                     </div>
                     <div class="form-group">
-                        <label for="grid-size">Wielkość siatki</label>
+                        <label for="grid-size">Base(mesh) Size</label>
                         <input class="form-control" type="number" id="grid-size" name="baseSize">
                     </div>
                     <div class="form-group">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="borders" value="1" id="borders-check">
                             <label class="form-check-label" for="borders-check">
-                                Krawędzie lokacji
+                                Border Edges
                             </label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="areaName" value="1" id="area-check">
                             <label class="form-check-label" for="area-check">
-                                Nazwy stref
+                                Area Names
                             </label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="showLabels" value="1" id="labels-check">
                             <label class="form-check-label" for="labels-check">
-                                Etykiety
+                                Labels
                             </label>
                         </div>
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Zapisz</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </form>
         </div>
@@ -135,26 +134,29 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Pomoc</h5>
+                <h5 class="modal-title">Help</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p><kbd>F1</kbd> - ta pomoc</p>
-                <p><kbd>Ctrl + S</kbd> - zapisanie obrazka</p>
-                <p><kbd>Ctrl + C</kbd> - kopiowanie obrazka do schowka</p>
-                <p><kbd>Ctrl + F</kbd> - wyszukiwaie</p>
+                <p><kbd>F1</kbd> - this help</p>
+                <p><kbd>Ctrl + S</kbd> - save the image</p>
+                <p><kbd>Ctrl + C</kbd> - copy image to clipboard</p>
+                <p><kbd>Ctrl + F</kbd> - search</p>
                 <p></p>
-                <p><kbd>+</kbd> - przybliżenie</p>
-                <p><kbd>-</kbd> - oddalenie</p>
-                <p><kbd>↑ ↓ → ←</kbd> - przesuwanie mapy</p>
+                <p><kbd>+</kbd> - zoom in</p>
+                <p><kbd>-</kbd> - zoom out</p>
+                <p><kbd>↑ ↓ → ←</kbd> - moves the map</p>
             </div>
             <div class="modal-footer">
                 <div>
-                    Autor: Dargoth
+                    Author: Dargoth
                     <br>
-                    GitHub projektu: <a target="_blank" href="https://github.com/Delwing/mudlet-map-reader">https://github.com/Delwing/mudlet-map-reader</a></div>
+                    Translated to english and repackaged for general use by Demonnic
+                    <br>
+                    Original GitHub projekt: <a target="_blank" href="https://github.com/Delwing/mudlet-map-reader">https://github.com/Delwing/mudlet-map-reader</a>
+                </div>
             </div>
         </div>
     </div>
@@ -174,16 +176,16 @@
 </div>
 <div class="map-container">
     <div class="info-box">
-        <p>Id Lokacji: <span class="room-id"></span></p>
-        <p>Nazwa: <span class="room-name"></span></p>
-        <p>Koordynaty:
+        <p>Room ID: <span class="room-id"></span></p>
+        <p>Name: <span class="room-name"></span></p>
+        <p>Coordinates:
         <ul>
             <li>x: <span class="coord-x"></span></li>
             <li>y: <span class="coord-y"></span></li>
             <li>z: <span class="coord-z"></span></li>
         </ul>
         <div class="special">
-            <p>Specjalne:</p>
+            <p>Special:</p>
             <ul></ul>
         </div>
     </div>
