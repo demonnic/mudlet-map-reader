@@ -1,22 +1,25 @@
-# Map Reader do Mudleta
+# Mudlet Map Explorer
 
-Plugin do [Arkadia skryptów](https://github.com/tjurczyk/arkadia)
-Minimalna wymagana wersja skryptów to 4.7
+Adapted from the plugin for [Arkadia](https://arkadia.rpg.pl/)
 
-Eksportuje mapę do odczytu w przeglądarace.
-Work in progress...
-![Screenshot](https://raw.githubusercontent.com/Delwing/mudlet-map-reader/media/screenshot.jpg)
+Original source code available here: https://github.com/Delwing/mudlet-map-reader
 
-## Instalacja
+I've honestly just translated it from Polish to English and removed the Arkadian branding to make it more Mudlet generic. The original work is excellent and I will be monitoring upstream to pull in additional enhancements as they come.
 
+Screenshot is from [Asteria](http://www.asteriamud.com/home.html)
+
+![Screenshot](https://demonnic.github.io/gifs/MudletMapExplorer.png)
+
+## Installation
+
+Download the latest mpackage release from https://github.com/demonnic/mudlet-map-reader/releases/latest
+
+If you've installed a previous version, uninstall it from the Package Manager, then install the new version either by using the Package Manager or dragging the file and dropping it onto Mudlet's main screen.
+
+## Usage
+
+Just run the alias
 ```
-/zainstaluj_plugin https://codeload.github.com/Delwing/mudlet-map-reader/zip/master
+/explore-map
 ```
-
-## Użytkowanie
-
-Wystarczy wywołać komendę
-```
-/export_map
-```
-Komenda wyeksportują naszą mapę i otworzy przeglądarkę.
+It will then set about exporting the map data and opening your web browser to the index page.

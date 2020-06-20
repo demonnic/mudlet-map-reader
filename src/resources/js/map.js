@@ -464,7 +464,7 @@ class MapRenderer {
         } else if (style === "solid line") {
 
         } else {
-            console.log("Brak opisu stylu: " + style);
+            console.log("No style description:" + style);
         }
 
 
@@ -1049,9 +1049,9 @@ class Controls {
         let that = this;
         if (typeof ClipboardItem !== "undefined") {
             that.canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})]));
-            this.showToast("Skopiowano do schowka")
+            this.showToast("Copied to clipboard")
         } else {
-            this.showToast("Twoja przeglądarka nie wspiera kopiowania do schowka")
+            this.showToast("Your browser does not support copying to the clipboard")
         }
         this.toastContainer.toast('show')
     }
@@ -1083,7 +1083,7 @@ class Controls {
             this.renderer.focus(room);
             this.renderer.onRoomClick(roomIndex[parseInt(id)]);
         } else {
-            this.showToast("Nie znaleziono takiej lokacji")
+            this.showToast("No such room found")
         }
     }
 
@@ -1114,7 +1114,7 @@ class Controls {
 
         settings = {...settings, ...formData};
 
-        this.showToast("Zapisano ustawienia")
+        this.showToast("Saving Settings")
         this.redraw();
         this.settingsModal.modal('toggle')
 
