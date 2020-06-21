@@ -4,7 +4,7 @@ let settings = {
     borders: true,
     areaName: true,
     showLabels: true,
-}
+};
 
 let loaded = getCookie("settings");
 if (loaded) {
@@ -57,6 +57,8 @@ class MapRenderer {
         this.charsLayer = new Layer();
         this.roomSelected = undefined;
         this.isDrag = false;
+        this.rasterLayer = new Layer();
+        this.rasterLayer.name = "Raster";
     }
 
     render(highlights) {
@@ -75,7 +77,7 @@ class MapRenderer {
         text.locked = true;
         text.scale(1, -1);
 
-        if(!settings.areaName) {
+        if (!settings.areaName) {
             text.content = "";
         }
 
@@ -552,7 +554,7 @@ class MapRenderer {
 
     renderChar(room) {
         this.charsLayer.activate();
-        let size =  this.baseSize * (0.8 / room.roomChar.length)
+        let size = this.baseSize * (0.8 / room.roomChar.length)
         let text = new PointText(new Point(room.getXMid(), room.getYMid() + size / 2.7));
         text.fillColor = 'black';
         text.fontSize = size;
@@ -577,24 +579,50 @@ class MapRenderer {
         infoBox.find(".coord-y").html(room.y);
         infoBox.find(".coord-z").html(room.z);
 
-        let special = infoBox.find(".special");
-        let specialList = special.find("ul")
-        specialList.html("");
+        this.infoExitsGroup(infoBox.find(".exits"), room.exits)
+        this.infoExitsGroup(infoBox.find(".special"), room.specialExits)
+
+        this.userDataGroup(infoBox.find(".userData"), room.userData)
+
+    }
+
+    userDataGroup(container, userData) {
+        let containerList = container.find("ul");
+        containerList.html("");
         let show = false;
-        for (let exit in room.specialExits) {
+        for (let userDataKey in userData) {
             show = true;
-            specialList.append("<li>" + exit + " : " + room.specialExits[exit] + "</li>")
+            containerList.append("<li>" + userDataKey + ":<br>&nbsp; &nbsp; &nbsp;" + userData[userDataKey] + "</lu>");
         }
-        special.toggle(show)
-        let userData = infoBox.find(".userData");
-        let userDataList = userData.find("ul");
-        userDataList.html("");
-        let UDshow = false;
-        for (let userDataKey in room.userData) {
-            UDshow = true;
-            userDataList.append("<li>" + userDataKey + ":<br>&nbsp; &nbsp; &nbsp;" + room.userData[userDataKey] + "</lu>")
+        container.toggle(show);
+    }
+
+    infoExitsGroup(container, exits) {
+        let containerList = container.find("ul");
+        containerList.html("");
+        let show = false;
+        for (let exit in exits) {
+            show = true;
+            containerList.append(this.infoExit(exit, exits[exit]));
         }
-        userData.toggle(UDshow)
+        container.toggle(show);
+    }
+
+    infoExit(exit, id) {
+        let areaLink = "";
+        if (roomIndex[id].areaId !== this.area.areaId) {
+            let destRoom = roomIndex[id];
+            let area = this.controls.reader.data[mapDataIndex[destRoom.areaId]];
+            areaLink = ' ->  ' + '<a href="#" data-room="' + destRoom.id + '">' + area.areaName + '</a>'
+        }
+        return "<li>" + this.translateDir(exit) + " : " + '<a href="#" data-room="' + id + '">' + id + '</a>' + areaLink + "</li>";
+    }
+
+    translateDir(dir) {
+        // if (plDirs.hasOwnProperty(dir)) {
+        //     return plDirs[dir];
+        // }
+        return dir
     }
 
     hideRoomInfo() {
@@ -715,7 +743,7 @@ class MapReader {
         let area = this.data[mapDataIndex[areaId]];
         let levels = new Set();
         //TODO: Not optimal...
-        let candidateArea = new Area(area.areaName, area.rooms.filter(value => {
+        let candidateArea = new Area(areaId, area.areaName, area.rooms.filter(value => {
             levels.add(parseInt(value.z));
             return value.z === zIndex
         }), area.labels.filter(value => value.Z === zIndex), zIndex, levels);
@@ -729,7 +757,8 @@ class MapReader {
 }
 
 class Area {
-    constructor(areaName, rooms, labels, zIndex, levels) {
+    constructor(areaId, areaName, rooms, labels, zIndex, levels) {
+        this.areaId = parseInt(areaId);
         this.areaName = areaName;
         this.rooms = [];
         this.labels = labels;
@@ -915,6 +944,12 @@ class Controls {
         jQuery(window).on("resize", function () {
             that.redraw()
         });
+
+        jQuery("body").on("click", "[data-room]", function (e) {
+            that.findRoom(parseInt(jQuery(this).attr("data-room")));
+            e.preventDefault();
+        });
+          
     }
 
     activateMouseEvents() {
@@ -1070,7 +1105,7 @@ class Controls {
         this.searchModal.modal('show');
     }
 
-    submitSearch(event) {
+    submitSearch() {
         this.searchModal.modal('toggle');
         let inputs = this.search.find(':input');
 
@@ -1081,7 +1116,7 @@ class Controls {
         });
 
         if (formData.roomId !== undefined) {
-          this.findRoom(parseInt(formData.roomId))
+            this.findRoom(parseInt(formData.roomId))
         }
     }
 
@@ -1113,9 +1148,9 @@ class Controls {
         inputs.each(function () {
             let name = jQuery(this).attr("name");
             let type = jQuery(this).attr("type")
-            if(type === "checkbox") {
+            if (type === "checkbox") {
                 formData[name] = jQuery(this).is(":checked");
-            } else if(type === "number") {
+            } else if (type === "number") {
                 formData[name] = parseInt(jQuery(this).val());
             } else {
                 formData[name] = jQuery(this).val();
@@ -1164,7 +1199,7 @@ jQuery(function () {
     }
     let controls = new Controls(canvas, mapData);
     let roomSearch = params.get('id');
-    if(!roomSearch) {
+    if (!roomSearch) {
         controls.draw(area, 0, highlights);
     } else {
         controls.findRoom(parseInt(roomSearch));
@@ -1208,6 +1243,19 @@ let dirNumbers = {
     9: "u",
     10: "d",
 };
+
+let plDirs = {
+    "north": "polnoc",
+    "south": "poludnie",
+    "east": "wschod",
+    "west": "zachod",
+    "northeast": "polnocny-wschod",
+    "northwest": "polnocny-zachod",
+    "southeast": "poludniowy-wschod",
+    "southwest": "poludniowy-zachod",
+    "up": "gora",
+    "down": "dol",
+}
 
 function dirsShortToLong(dir) {
     let result = getKeyByValue(dirs, dir);
