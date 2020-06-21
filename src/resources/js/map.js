@@ -579,11 +579,10 @@ class MapRenderer {
         infoBox.find(".coord-y").html(room.y);
         infoBox.find(".coord-z").html(room.z);
 
-        this.infoExitsGroup(infoBox.find(".exits"), room.exits)
-        this.infoExitsGroup(infoBox.find(".special"), room.specialExits)
+        this.infoExitsGroup(infoBox.find(".exits"), room.exits);
+        this.infoExitsGroup(infoBox.find(".special"), room.specialExits);
 
-        this.userDataGroup(infoBox.find(".userData"), room.userData)
-
+        this.userDataGroup(infoBox.find(".userData"), room.userData);
     }
 
     userDataGroup(container, userData) {
@@ -1198,6 +1197,8 @@ jQuery(function () {
         highlights = toHighlight.split(",")
     }
     let controls = new Controls(canvas, mapData);
+    globalControls = controls;
+    globalControls.lightMode = true
     let roomSearch = params.get('id');
     if (!roomSearch) {
         controls.draw(area, 0, highlights);

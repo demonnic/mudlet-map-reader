@@ -32,7 +32,7 @@ function MapExporter:export()
             local userDataKeys = getRoomUserDataKeys(v)
             local userData = {}
             for _,key in ipairs(userDataKeys) do
-              userData[key] = getRoomUserData(v,key)
+                userData[key] = getRoomUserData(v,key)
             end
             local roomInfo = {
                 id = v,
@@ -109,7 +109,7 @@ function MapExporter:export()
 
     local fileLocation = self.dir .. "index.html"
     local fileURL = "file:///" .. fileLocation
-    cecho("<white:blue>Map Explorer:<red> Opening map explorer page at " .. fileLocation .. "\n")
+    cecho("<white:blue>Map Explorer:<red:black> Opening map explorer page at " .. fileLocation .. "\n")
     openUrl(fileURL)
 end
 
