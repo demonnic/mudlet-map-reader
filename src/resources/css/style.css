@@ -67,6 +67,10 @@ form {
     backdrop-filter: blur(3px) brightness(60%);
 }
 
+.info-box a {
+    color: #174762
+}
+
 .info-box li {
     list-style-type: none;
 }
