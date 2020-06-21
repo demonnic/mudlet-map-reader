@@ -572,6 +572,7 @@ class MapRenderer {
         infoBox.toggle(true);
         infoBox.find(".room-id").html(room.id);
         infoBox.find(".room-name").html(room.name);
+        infoBox.find(".room-env").html(room.env);
         infoBox.find(".coord-x").html(room.x);
         infoBox.find(".coord-y").html(room.y);
         infoBox.find(".coord-z").html(room.z);
@@ -585,6 +586,15 @@ class MapRenderer {
             specialList.append("<li>" + exit + " : " + room.specialExits[exit] + "</li>")
         }
         special.toggle(show)
+        let userData = infoBox.find(".userData");
+        let userDataList = userData.find("ul");
+        userDataList.html("");
+        let UDshow = false;
+        for (let userDataKey in room.userData) {
+            UDshow = true;
+            userDataList.append("<li>" + userDataKey + ":<br>&nbsp; &nbsp; &nbsp;" + room.userData[userDataKey] + "</lu>")
+        }
+        userData.toggle(UDshow)
     }
 
     hideRoomInfo() {
