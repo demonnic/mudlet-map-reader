@@ -591,7 +591,7 @@ class MapRenderer {
         let show = false;
         for (let userDataKey in userData) {
             show = true;
-            containerList.append("<li>" + userDataKey + ":<br>&nbsp; &nbsp; &nbsp;" + userData[userDataKey] + "</lu>");
+            containerList.append("<li>" + userDataKey + ":<br>&nbsp; &nbsp; &nbsp;" + userData[userDataKey] + "</li>");
         }
         container.toggle(show);
     }
