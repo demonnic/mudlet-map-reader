@@ -1,6 +1,14 @@
 [
   {
     "name": "explore-map",
-    "regex": "^\\/explore-map( false|$)"
+    "regex": "^\\/explore-map$"
+  },
+  {
+    "name": "export-map",
+    "regex": "^\\/export-map$"
+  },
+  {
+    "name": "link-map",
+    "regex": "^\\/link-map"
   }
 ]

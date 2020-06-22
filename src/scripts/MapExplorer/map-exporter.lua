@@ -6,10 +6,18 @@ local fileLocation = MapExporter.dir .. "index.html"
 local fileURL = "file:///" .. fileLocation
 MapExporter.fileLocation = fileLocation
 MapExporter.fileURL = fileURL
-function MapExporter:export(openPage)
-    if openPage == nil then
-        openPage = true
-    end
+
+function MapExporter:echoUrl()
+    cecho("<blue>(<white>Map Explorer<blue>) ")
+    echoLink(fileLocation, string.format([[openUrl("%s")]], fileURL), "Open in browser", false)
+    echo(" \n")
+end
+
+function MapExporter:openUrl()
+  openUrl(fileURL)
+end
+
+function MapExporter:export()
     local areas = {}
     for areaName, areaId in pairs(getAreaTable()) do
 
@@ -112,13 +120,6 @@ function MapExporter:export(openPage)
         currentPosition:write(yajl.to_string(position))
         currentPosition:close()
     end
-
-    if openPage then
-        openUrl(fileURL)
-    end
-    cecho("<blue>(<white>Map Explorer<blue>)<red> exported as ")
-    echoLink(fileLocation, string.format([[openUrl("%s")]], fileURL), "Open in browser", false)
-    echo(" \n")
 end
 
 function MapExporter:fixCustomLines(lineObj)
