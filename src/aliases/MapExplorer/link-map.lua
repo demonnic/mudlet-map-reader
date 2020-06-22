@@ -1,0 +1,2 @@
+MapExporter:export()
+MapExporter:echoUrl()
