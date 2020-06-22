@@ -1,6 +1,6 @@
 [
   {
     "name": "explore-map",
-    "regex": "^/explore-map"
+    "regex": "^\\/explore-map( false|$)"
   }
 ]

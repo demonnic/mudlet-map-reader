@@ -4,6 +4,7 @@ let settings = {
     borders: true,
     areaName: true,
     showLabels: true,
+    defaultZoom: 2,
 };
 
 let loaded = getCookie("settings");
@@ -352,6 +353,7 @@ class MapRenderer {
 
     onExitClick(room) {
         this.controls.draw(room.areaId, room.z)
+        this.controls.zoom(settings.defaultZoom)
     }
 
     pointerReactor(path) {
@@ -831,6 +833,7 @@ class Controls {
         this.levels.on("click", ".btn-level", function () {
             let zIndex = parseInt(jQuery(this).attr("data-level"));
             that.draw(that.areaId, zIndex);
+            that.zoom(settings.defaultZoom);
         });
 
         this.saveImageButton.on("click", function () {
@@ -1042,6 +1045,7 @@ class Controls {
         let that = this;
         select.on("change", function (event) {
             that.draw(jQuery(this).val(), 0);
+            that.zoom(settings.defaultZoom);
         })
     }
 
@@ -1123,7 +1127,7 @@ class Controls {
         let room = roomIndex[id];
         if (room !== undefined) {
             this.draw(room.areaId, room.z);
-            this.zoom(6);
+            this.zoom(settings.defaultZoom);
             this.renderer.focus(room);
             this.renderer.onRoomClick(roomIndex[parseInt(id)]);
         } else {
@@ -1160,6 +1164,7 @@ class Controls {
 
         this.showToast("Saving Settings")
         this.redraw();
+        this.zoom(settings.defaultZoom);
         this.settingsModal.modal('toggle')
 
         setCookie("settings", JSON.stringify(settings), 999);
@@ -1202,6 +1207,7 @@ jQuery(function () {
     let roomSearch = params.get('id');
     if (!roomSearch) {
         controls.draw(area, 0, highlights);
+        controls.zoom(settings.defaultZoom);
     } else {
         controls.findRoom(parseInt(roomSearch));
     }

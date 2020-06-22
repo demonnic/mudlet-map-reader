@@ -2,8 +2,14 @@ MapExporter = MapExporter or {
     areas = {},
     dir = getMudletHomeDir() .. "/@PKGNAME@/"
 }
-
-function MapExporter:export()
+local fileLocation = MapExporter.dir .. "index.html"
+local fileURL = "file:///" .. fileLocation
+MapExporter.fileLocation = fileLocation
+MapExporter.fileURL = fileURL
+function MapExporter:export(openPage)
+    if openPage == nil then
+        openPage = true
+    end
     local areas = {}
     for areaName, areaId in pairs(getAreaTable()) do
 
@@ -107,10 +113,12 @@ function MapExporter:export()
         currentPosition:close()
     end
 
-    local fileLocation = self.dir .. "index.html"
-    local fileURL = "file:///" .. fileLocation
-    cecho("<white:blue>Map Explorer:<red:black> Opening map explorer page at " .. fileLocation .. "\n")
-    openUrl(fileURL)
+    if openPage then
+        openUrl(fileURL)
+    end
+    cecho("<blue>(<white>Map Explorer<blue>)<red> exported as ")
+    echoLink(fileLocation, string.format([[openUrl("%s")]], fileURL), "Open in browser", false)
+    echo(" \n")
 end
 
 function MapExporter:fixCustomLines(lineObj)
