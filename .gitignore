@@ -5,3 +5,4 @@ build/
 src/resources/data/current.js
 src/resources/data/mapExport.js
 src/resources/data/colors.js
+.vscode/

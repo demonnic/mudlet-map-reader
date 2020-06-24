@@ -1,0 +1,11 @@
+[
+  {
+    "name": "FixColors",
+    "patterns": [
+      {
+        "pattern": "^Password correct. Welcome to (\\w+).$",
+        "type": "regex"
+      }
+    ]
+  }
+]
