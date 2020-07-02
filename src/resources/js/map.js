@@ -5,6 +5,7 @@ let settings = {
     areaName: true,
     showLabels: true,
     defaultZoom: 2,
+    radiusLimit: 0,
 };
 
 let loaded = getCookie("settings");
@@ -62,7 +63,7 @@ class MapRenderer {
         this.rasterLayer.name = "Raster";
     }
 
-    render(highlights) {
+    render() {
         this.hideRoomInfo();
 
         let textOffset = 50;
@@ -92,10 +93,6 @@ class MapRenderer {
         this.area.rooms.forEach(value => this.renderRoom(new Room(value, this.baseSize)), this);
         if (this.area.labels !== undefined && settings.showLabels) {
             this.area.labels.forEach(value => this.renderLabel(value), this);
-        }
-
-        if (highlights !== undefined) {
-            highlights.forEach(value => this.renderHighlight(value));
         }
 
         project.layers.forEach(function (layer) {
@@ -275,18 +272,6 @@ class MapRenderer {
             });
         }
         this.hideRoomInfo()
-    }
-
-    renderHighlight(roomId) {
-        let room = roomIndex[roomId]
-        if (room.exists()) {
-            this.labelsLayer.activate();
-            let circle = new Path.Circle(new Point(room.getXMid(), room.getYMid()), this.baseSize * 0.40);
-            circle.fillColor = 'red';
-            circle.strokeColor = '#e8fdff';
-            circle.strokeWidth = 5;
-            circle.bringToFront();
-        }
     }
 
     renderLink(room1, dir1, room2, exit) {
@@ -641,8 +626,8 @@ class MapRenderer {
         text.scale(1, -1)
     }
 
-    focus(roomProperties) {
-        view.center = roomIndex[roomProperties.id].render.position
+    focus(room) {
+        view.center = room.render.position
     }
 
 }
@@ -740,13 +725,18 @@ class MapReader {
         return this.data;
     }
 
-    getArea(areaId, zIndex) {
+    getArea(areaId, zIndex, limits) {
         let area = this.data[mapDataIndex[areaId]];
         let levels = new Set();
         //TODO: Not optimal...
-        let candidateArea = new Area(areaId, area.areaName, area.rooms.filter(value => {
-            levels.add(parseInt(value.z));
-            return value.z === zIndex
+        let candidateArea = new Area(areaId, area.areaName, area.rooms.filter(room => {
+          levels.add(parseInt(room.z));
+          let isOnLevel = room.z === zIndex;
+          let isWithinBounds = true;
+          if (limits) {
+              isWithinBounds = limits.xMin < room.x && limits.xMax > room.x && limits.yMin < room.y && limits.yMax > room.y;
+          }
+          return isOnLevel && isWithinBounds
         }), area.labels.filter(value => value.Z === zIndex), zIndex, levels);
         if (!levels.has(zIndex)) {
             candidateArea = this.getArea(areaId, levels.values().next().value)
@@ -866,15 +856,31 @@ class Controls {
             event.preventDefault();
             that.handleSaveSettings();
         });
+        
+        let directionKeys = {
+          "Numpad1" : 'sw',
+          "Numpad2" : 's',
+          "Numpad3" : 'se',
+          "Numpad4" : 'w',
+          "Numpad6" : 'e',
+          "Numpad7" : 'nw',
+          "Numpad8" : 'n',
+          "Numpad9" : 'ne',
+          "NumpadMultiply" : 'u',
+          "NumpadDivide" : 'd',
+      };
 
         window.addEventListener("keydown", function keydown(event) {
             if (event.code === "F1") {
                 that.showHelp();
                 event.preventDefault();
             }
-        });
-
-        window.addEventListener("keydown", function keydown(event) {
+            
+            if(directionKeys.hasOwnProperty(event.code)) {
+              that.goDirection(directionKeys[event.code]);
+              event.preventDefault();
+            }
+            
             if (event.ctrlKey && event.code === "KeyF") {
                 that.showSearch();
                 event.preventDefault();
@@ -889,41 +895,22 @@ class Controls {
                 that.copyImage();
                 event.preventDefault();
             }
-        });
 
-        window.addEventListener("keydown", function keydown(event) {
             if (event.ctrlKey && event.code === "KeyS") {
                 that.saveImage();
                 event.preventDefault();
-            }
-        });
-
-        window.addEventListener("keydown", function keydown(event) {
-            if (jQuery("input").is(":focus")) {
-                return;
             }
 
             if (event.code === "Equal") {
                 that.zoom(1.1);
                 event.preventDefault();
             }
-        });
-
-        window.addEventListener("keydown", function keydown(event) {
-            if (jQuery("input").is(":focus")) {
-                return;
-            }
 
             if (event.code === "Minus") {
                 that.zoom(0.9);
                 event.preventDefault();
             }
-        });
 
-        window.addEventListener("keydown", function keydown(event) {
-            if (jQuery("input").is(":focus")) {
-                return;
-            }
             if (event.code === "ArrowUp") {
                 that.move(0, -1);
                 event.preventDefault();
@@ -1066,18 +1053,30 @@ class Controls {
         }
     }
 
-    draw(areaId, zIndex, highlights) {
+    draw(areaId, zIndex, room) {
         view.zoom = 1;
         project.clear();
         this.areaId = areaId;
         this.zIndex = zIndex;
-        let area = this.reader.getArea(this.areaId, zIndex);
+        let area = this.reader.getArea(this.areaId, zIndex, this.getLimits(room));
         this.zIndex = area.getZIndex();
         this.populateLevelButtons(area.getLevels(), this.zIndex);
         this.renderer = new MapRenderer(this, this.canvas, area, 1);
-        this.renderer.render(highlights);
+        this.renderer.render();
         view.draw();
         this.select.val(areaId);
+    }
+
+    getLimits(room) {
+      if (!room || settings.radiusLimit === 0) {
+          return false;
+      }
+      return {
+          xMin: room.x - settings.radiusLimit / 2,
+          xMax: room.x + settings.radiusLimit / 2,
+          yMin: room.y - settings.radiusLimit / 2,
+          yMax: room.y + settings.radiusLimit / 2,
+      };
     }
 
     redraw() {
@@ -1126,9 +1125,9 @@ class Controls {
     findRoom(id) {
         let room = roomIndex[id];
         if (room !== undefined) {
-            this.draw(room.areaId, room.z);
+            this.draw(room.areaId, room.z, room);
             this.zoom(settings.defaultZoom);
-            this.renderer.focus(room);
+            this.renderer.focus(roomIndex[parseInt(id)]);
             this.renderer.onRoomClick(roomIndex[parseInt(id)]);
         } else {
             this.showToast("No such room found")
@@ -1180,6 +1179,13 @@ class Controls {
             }
         }
     }
+    goDirection(directionKey) {
+        let fullDirection = dirsShortToLong(directionKey);
+        if(this.renderer.roomSelected) {
+            this.findRoom(this.renderer.roomSelected.exits[fullDirection]);
+
+        }
+    }
 
 }
 
@@ -1196,17 +1202,10 @@ jQuery(function () {
         area = 1;
     }
 
-    let highlights = [];
-    let toHighlight = params.get('highlights');
-    if (toHighlight !== null) {
-        highlights = toHighlight.split(",")
-    }
     let controls = new Controls(canvas, mapData);
-    globalControls = controls;
-    globalControls.lightMode = true
     let roomSearch = params.get('id');
     if (!roomSearch) {
-        controls.draw(area, 0, highlights);
+        controls.draw(area, 0);
         controls.zoom(settings.defaultZoom);
     } else {
         controls.findRoom(parseInt(roomSearch));
@@ -1262,7 +1261,7 @@ let plDirs = {
     "southwest": "poludniowy-zachod",
     "up": "gora",
     "down": "dol",
-}
+};
 
 function dirsShortToLong(dir) {
     let result = getKeyByValue(dirs, dir);
