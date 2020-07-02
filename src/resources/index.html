@@ -1,215 +1,216 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Mudlet Map Explorer</title>
-    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico"/>
-    <script src="data/current.js"></script>
-    <script src="data/mapExport.js"></script>
-    <script src="data/colors.js"></script>
-    <script src="js/paper-full.min.js"></script>
-    <script src="js/jquery.js"></script>
-    <script src="js/jquery-mousewheel.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/map.js"></script>
-    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="css/style.css" rel="stylesheet" type="text/css">
+  <meta charset="UTF-8">
+  <title>Mudlet Map Explorer</title>
+  <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico"/>
+  <script src="data/current.js"></script>
+  <script src="data/mapExport.js"></script>
+  <script src="data/colors.js"></script>
+  <script src="js/paper-full.min.js"></script>
+  <script src="js/jquery.js"></script>
+  <script src="js/jquery-mousewheel.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/map.js"></script>
+  <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<header>
+  <header>
     <div class="left-header">
-    <h2>
+      <h2>
         <a href="index.html">Mudlet Map Explorer</a>
-    </h2>
-    <div class="map-controls">
+      </h2>
+      <div class="map-controls">
         <form>
-            <select class="form-control" id="area"></select>
+          <select class="form-control" id="area"></select>
         </form>
         <span class="levels-container">
-            <span class="control levels btn-group btn-group-toggle"></span>
+          <span class="control levels btn-group btn-group-toggle"></span>
         </span>
-    </div>
+      </div>
     </div>
     <div class="controls flex-wrap btn-toolbar">
-        <button class="control copy-image btn btn-secondary" title="Copy Image">
-            <img src="images/files.svg" alt="Copy">
-            <span>Copy Image</span>
-        </button>
-        <button class="control save-image btn btn-secondary" title="Save Image">
-            <img src="images/download.svg" alt="Download">
-            <span>Save Image</span>
-        </button>
-        <button class="control search btn btn-secondary" data-toggle="modal" data-target="#search" title="Search">
-            <img src="images/search.svg" alt="search">
-            <span>Search</span>
-        </button>
-        <button class="control settings btn btn-secondary" data-toggle="modal" data-target="#settings" title="Settings">
-            <img src="images/gear-fill.svg" alt="gear">
-            <span>Settings</span>
-        </button>
-        <button class="control help btn btn-secondary" data-toggle="modal" data-target="#help" title="Help">
-            <img src="images/question-circle.svg" alt="question">
-            <span>Help</span>
-        </button>
+      <button class="control copy-image btn btn-secondary" title="Copy Image">
+        <img src="images/files.svg" alt="Copy">
+        <span>Copy Image</span>
+      </button>
+      <button class="control save-image btn btn-secondary" title="Save Image">
+        <img src="images/download.svg" alt="Download">
+        <span>Save Image</span>
+      </button>
+      <button class="control search btn btn-secondary" data-toggle="modal" data-target="#search" title="Search">
+        <img src="images/search.svg" alt="search">
+        <span>Search</span>
+      </button>
+      <button class="control settings btn btn-secondary" data-toggle="modal" data-target="#settings" title="Settings">
+        <img src="images/gear-fill.svg" alt="gear">
+        <span>Settings</span>
+      </button>
+      <button class="control help btn btn-secondary" data-toggle="modal" data-target="#help" title="Help">
+        <img src="images/question-circle.svg" alt="question">
+        <span>Help</span>
+      </button>
     </div>
-</header>
-<div class="progress-container">
+  </header>
+  <div class="progress-container">
     <div class="progress">
-        <div class="progress-bar" role="progressbar" style="width: 50%;"></div>
+      <div class="progress-bar" role="progressbar" style="width: 50%;"></div>
     </div>
-</div>
-<div class="modal fade" id="search" tabindex="-1" role="dialog">
+  </div>
+  <div class="modal fade" id="search" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form class="search-form">
-                <div class="modal-header">
-                    <h5 class="modal-title">Search</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="search-id">Room ID:</label>
-                        <input class="form-control" type="text" id="search-id" name="roomId">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </div>
-            </form>
-        </div>
+      <div class="modal-content">
+        <form class="search-form">
+          <div class="modal-header">
+            <h5 class="modal-title">Search</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="search-id">Room ID:</label>
+              <input class="form-control" type="text" id="search-id" name="roomId">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Search</button>
+          </div>
+        </form>
+      </div>
     </div>
-</div>
-<div class="modal fade" id="settings" tabindex="-1" role="dialog">
+  </div>
+  <div class="modal fade" id="settings" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form class="settings-form">
-                <div class="modal-header">
-                    <h5 class="modal-title">Settings</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="location-size">Room Size</label>
-                        <input class="form-control" type="number" id="location-size" name="roomSize">
-                    </div>
-                    <div class="form-group">
-                        <label for="grid-size">Base(mesh) Size</label>
-                        <input class="form-control" type="number" id="grid-size" name="baseSize">
-                    </div>
-                    <div class="form-group">
-                        <label for="default-zoom">Default Zoom</label>
-                        <input class="form-control" type="number" min="1" max="5" id="default-zoom" name="defaultZoom">
-                    </div>
-                    <!--
-                    <div class="form-group">
-                      <label for="view-radius">View Radius</label>
-                      <input class="form-control" type="number" min="0" max="100" id="view-radius" name="radiusLimit">
-                    </div>
-                    -->
-                    <div class="form-group">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="borders" value="1" id="borders-check">
-                            <label class="form-check-label" for="borders-check">
-                                Room Borders
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="areaName" value="1" id="area-check">
-                            <label class="form-check-label" for="area-check">
-                                Area Names
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="showLabels" value="1" id="labels-check">
-                            <label class="form-check-label" for="labels-check">
-                                Labels
-                            </label>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </div>
-            </form>
-        </div>
+      <div class="modal-content">
+        <form class="settings-form">
+          <div class="modal-header">
+            <h5 class="modal-title">Settings</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="location-size">Room Size</label>
+              <input class="form-control" type="number" id="location-size" name="roomSize">
+            </div>
+            <div class="form-group">
+              <label for="grid-size">Base(mesh) Size</label>
+              <input class="form-control" type="number" id="grid-size" name="baseSize">
+            </div>
+            <div class="form-group">
+              <label for="default-zoom">Default Zoom</label>
+              <input class="form-control" type="number" min="1" max="5" id="default-zoom" name="defaultZoom">
+            </div>
+            <!--
+              <div class="form-group">
+                <label for="view-radius">View Radius</label>
+                <input class="form-control" type="number" min="0" max="100" id="view-radius" name="radiusLimit">
+              </div>
+            -->
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="borders" value="1" id="borders-check">
+                <label class="form-check-label" for="borders-check">
+                  Room Borders
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="areaName" value="1" id="area-check">
+                <label class="form-check-label" for="area-check">
+                  Area Names
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="showLabels" value="1" id="labels-check">
+                <label class="form-check-label" for="labels-check">
+                  Labels
+                </label>
+              </div>
+            </div>
+            
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
     </div>
-</div>
-<div class="modal fade" id="help" tabindex="-1" role="dialog">
+  </div>
+  <div class="modal fade" id="help" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Help</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><kbd>F1</kbd> - this help</p>
-                <p><kbd>Ctrl + S</kbd> - save the image</p>
-                <p><kbd>Ctrl + C</kbd> - copy image to clipboard</p>
-                <p><kbd>Ctrl + F</kbd> - search</p>
-                <p></p>
-                <p><kbd>+</kbd> - zoom in</p>
-                <p><kbd>-</kbd> - zoom out</p>
-                <p><kbd>↑ ↓ → ←</kbd> - moves the map</p>
-                <p>You can also use the number pad to navigate normal exits. / is down, * is up.</p>
-            </div>
-            <div class="modal-footer">
-                <div>
-                    Author: Dargoth
-                    <br>
-                    Translated to english and repackaged for general use by Demonnic
-                    <br>
-                    Original GitHub project: <a target="_blank" href="https://github.com/Delwing/mudlet-map-reader">https://github.com/Delwing/mudlet-map-reader</a>
-                </div>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Help</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
         </div>
+        <div class="modal-body">
+          <p><kbd>F1</kbd> - this help</p>
+          <p><kbd>Ctrl + S</kbd> - save the image</p>
+          <p><kbd>Ctrl + C</kbd> - copy image to clipboard</p>
+          <p><kbd>Ctrl + F</kbd> - search</p>
+          <p></p>
+          <p><kbd>+</kbd> - zoom in</p>
+          <p><kbd>-</kbd> - zoom out</p>
+          <p><kbd>↑ ↓ → ←</kbd> - moves the map</p>
+          <p>You can also use the number pad to navigate normal exits. / is down, * is up.</p>
+        </div>
+        <div class="modal-footer">
+          <div>
+            Author: Dargoth
+            <br>
+            Translated to english and repackaged for general use by Demonnic
+            <br>
+            Original GitHub project: <a target="_blank" href="https://github.com/Delwing/mudlet-map-reader">https://github.com/Delwing/mudlet-map-reader</a>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-<div class="toasts">
+  </div>
+  <div class="toasts">
     <div class="toast" data-delay="2000">
-        <div class="toast-body"></div>
+      <div class="toast-body"></div>
     </div>
-</div>
-<div class="zoom-controls btn-group-vertical">
+  </div>
+  <div class="zoom-controls btn-group-vertical">
     <button class="btn btn-secondary btn-sm" data-factor="1.1">
-        <img src="images/plus.svg" alt="plus">
+      <img src="images/plus.svg" alt="plus">
     </button>
     <button class="btn btn-secondary btn-sm" data-factor="0.9">
-        <img src="images/dash.svg" alt="minus">
+      <img src="images/dash.svg" alt="minus">
     </button>
-</div>
-<div class="map-container">
+  </div>
+  <div class="map-container">
     <div class="info-box">
-        <p>Room ID: <span class="room-id"></span></p>
-        <p>Name: <span class="room-name"></span></p>
-        <p>Env ID: <span class="room-env"></span></p>
-        <p>Coordinates:
+      <p>Room ID: <span class="room-id"></span></p>
+      <p>Name: <span class="room-name"></span></p>
+      <p>Env ID: <span class="room-env"></span></p>
+      <p>Coordinates:
         <ul>
-            <li>x: <span class="coord-x"></span></li>
-            <li>y: <span class="coord-y"></span></li>
-            <li>z: <span class="coord-z"></span></li>
+          <li>x: <span class="coord-x"></span></li>
+          <li>y: <span class="coord-y"></span></li>
+          <li>z: <span class="coord-z"></span></li>
         </ul>
         <div class="exits">
-            <p>Exits:</p>
-            <ul></ul>
+          <p>Exits:</p>
+          <ul></ul>
         </div>
         <div class="special">
-            <p>Special Exits:</p>
-            <ul></ul>
+          <p>Special Exits:</p>
+          <ul></ul>
         </div>
         <div class="userData">
-            <p>Other:</p>
-            <ul></ul>
+          <p>Other:</p>
+          <ul></ul>
         </div>
+      </div>
+      <canvas id="map" resize="true"></canvas>
     </div>
-    <canvas id="map" resize="true"></canvas>
-</div>
-</body>
-</html>
+  </body>
+  </html>
+  
