@@ -33,11 +33,15 @@ mapData.sort(function (areaElement1, areaElement2) {
 
 let mapDataIndex = {};
 let roomIndex = {};
+let roomHash = {};
 mapData.forEach(function (value, index) {
   mapDataIndex[value.areaId] = index;
   value.rooms.forEach(room => {
     room.areaId = value.areaId;
     roomIndex[room.id] = room;
+    if (room.userData) {
+      roomHash[room.userData.hash] = room.id;
+    }
   });
 });
 
@@ -560,6 +564,7 @@ class MapRenderer {
     let infoBox = jQuery(".info-box");
     infoBox.toggle(true);
     infoBox.find(".room-id").html(room.id);
+    infoBox.find(".room-hash").html(room.userData.hash);
     infoBox.find(".room-name").html(room.name);
     infoBox.find(".room-env").html(room.env);
     infoBox.find(".coord-x").html(room.x);
@@ -1204,11 +1209,14 @@ jQuery(function () {
   
   let controls = new Controls(canvas, mapData);
   let roomSearch = params.get('id');
-  if (!roomSearch) {
+  let hashSearch = params.get('hash');
+  if (roomSearch) {
+    controls.findRoom(parseInt(roomSearch));
+  } else if (hashSearch) {
+    controls.findRoom( parseInt( roomHash[hashSearch] ) );
+  } else {
     controls.draw(area, 0);
     controls.zoom(settings.defaultZoom);
-  } else {
-    controls.findRoom(parseInt(roomSearch));
   }
   
   
