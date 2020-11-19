@@ -24,6 +24,7 @@ function MapExporter:getRoomInfo(roomId)
   for _,key in ipairs(userDataKeys) do
     userData[key] = getRoomUserData(roomId,key)
   end
+  userData.hash = getRoomHashByID(roomId)
   local roomInfo = {
     id = roomId,
     x = x,
